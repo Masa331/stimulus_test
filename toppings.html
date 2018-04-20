@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Pizza Time!</title>
+    <script src="https://unpkg.com/stimulus/dist/stimulus.umd.js"></script>
+    <script>
+      (() => {
+        const application = Stimulus.Application.start()
+
+        application.register("toppings", class extends Stimulus.Controller {
+          static get targets() {
+            return [ "topping", "total" ]
+          }
+
+          recalculateTotal() {
+            let activeToppings = this.toppingTargets.filter(topping => topping.checked)
+            let amounts = activeToppings.map(topping => parseFloat(topping.getAttribute('value')))
+            let amount = amounts.reduce((a, b) => a + b, 0)
+
+            this.totalTarget.textContent = `$${amount.toFixed(2)}`
+          }
+        })
+      })()
+    </script>
+  </head>
+
+  <body>
+    <fieldset data-controller="toppings">
+      <legend>Toppings</legend>
+      <input type="checkbox" value="0.5" id="ch1" data-action="toppings#recalculateTotal" data-target="toppings.topping"><label for="ch1">Pepperoni +$0.50</label><br>
+      <input type="checkbox" value="0.6" id="ch2" data-action="toppings#recalculateTotal" data-target="toppings.topping"><label for="ch2">Italian Sausage +$0.60</label><br>
+      <input type="checkbox" value="0.7" id="ch3" data-action="toppings#recalculateTotal" data-target="toppings.topping"><label for="ch3">Ham +$0.70</label><br>
+      <input type="checkbox" value="0.7" id="ch4" data-action="toppings#recalculateTotal" data-target="toppings.topping"><label for="ch4">Bacon +$0.70</label><br>
+      <input type="checkbox" value="1.5" id="ch5" data-action="toppings#recalculateTotal" data-target="toppings.topping"><label for="ch5">Extra Cheese +$1.50</label><br>
+      <input type="checkbox" value="1.5" id="ch6" data-action="toppings#recalculateTotal" data-target="toppings.topping"><label for="ch6">Stuffed Crust +$1.50</label><br>
+
+      <p><strong>Total toppings: <span data-target="toppings.total">$0.00</span></strong></div>
+    </fieldset>
+  </body>
+</html>

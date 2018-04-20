@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/stimulus/dist/stimulus.umd.js"></script>
+    <script>
+      (() => {
+        const application = Stimulus.Application.start()
+
+        application.register("hello", class extends Stimulus.Controller {
+          static get targets() {
+            return [ "name", "output" ]
+          }
+
+          connect() {
+            console.log('This is from Stimulus connect hook')
+          }
+
+          greet() {
+            this.outputTarget.textContent = `Ahoj! ${this.nameTarget.value}`
+          }
+        })
+      })()
+    </script>
+  </head>
+  <body>
+    <div data-controller="hello">
+      <input data-target="hello.name" type="text">
+
+      <button data-action="click->hello#greet">
+        Greet
+      </button>
+
+      <span data-target="hello.output">
+      </span>
+    </div>
+  </body>
+</html>
